@@ -1,27 +1,40 @@
 package com.kcctakehome.backend.service;
 
-import com.itextpdf.layout.properties.TextAlignment;
-import com.kcctakehome.backend.model.HurricaneEventModel;
-import com.kcctakehome.backend.model.HurricaneRecordModel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.TextAlignment;
+import com.kcctakehome.backend.model.HurricaneEventModel;
+import com.kcctakehome.backend.model.HurricaneRecordModel;
+import org.springframework.stereotype.Service;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * GenerateReportService.java
+ * <p>
+ * This class provides business logic for generating Hurricane report. It displays the Name, Date of Landfall, Max Wind Speed Event
+ *
+ * @author Emmanuel Chalumeau
+ * @version 1.0
+ * @since 2025-02-05
+ */
 
 @Service
 public class GenerateReportService {
 
+    /**
+     * Generates PDF by taking in a list of Hurricane Events. Displays: Name, Date of Landfall, and Max Wind Speed
+     *
+     * @param events List of Hurricane Events
+     * @return byte[]
+     * @throws IOException Error exception for generating PDF
+     */
 
-    @Autowired
-    public GenerateReportService() {
-    }
 
     public byte[] buildReport(List<HurricaneEventModel> events) throws IOException {
         HurricaneService getHurricaneInfo = new HurricaneService();
@@ -51,7 +64,7 @@ public class GenerateReportService {
             reportDocument.close();
             return generateReportStream.toByteArray();
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new RuntimeException("Error generating report: " + e.getMessage(), e);
         }
     }

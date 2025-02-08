@@ -1,7 +1,6 @@
 package com.kcctakehome.backend.controller;
 
 import com.kcctakehome.backend.model.HurricaneEventModel;
-import com.kcctakehome.backend.model.HurricaneRecordModel;
 import com.kcctakehome.backend.service.GenerateReportService;
 import com.kcctakehome.backend.service.HurricaneService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.List;
+
+/**
+ * HurricaneController.java
+ * <p>
+ * This class handles HTTP requests related to Hurricane operations.(Including generating a report)
+ * It provides RESTful endpoints for fetching hurricane data.
+ *
+ * @author Emmanuel Chalumeau
+ * @version 1.0
+ * @since 2025-02-05
+ */
 
 @RestController
 @RequestMapping("/api")
@@ -30,23 +40,24 @@ public class HurricaneController {
         this.generateReportService = generateReportService;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/fetchData")
-    public List<HurricaneEventModel> fetchData() {
-        return hurricaneService.fetchData();
-    }
-
+    /**
+     * Gets hurricane events
+     *
+     * @return List of Hurricanes
+     */
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/fetchfilterdData")
     public List<HurricaneEventModel> fetchfilterdData() {
         return hurricaneService.fetchFilteredByYearByLandfallByLocation();
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/displayData")
-    public List<HurricaneEventModel> displayData() {
-        return hurricaneService.fetchFilteredByYearByLandfallByLocation();
-    }
+    /**
+     * Generates and returns a PDF report of filtered hurricane data.
+     * The response is set to allow user to download the PDF attachment.
+     *
+     * @return ResponseEntity containing the PDF file as a byte array.
+     * @throws IOException if an error occurs during report generation.
+     */
 
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/downloadReport")
@@ -55,6 +66,13 @@ public class HurricaneController {
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=HurricaneReport.pdf").contentType(MediaType.APPLICATION_PDF).body(reportPdf);
     }
 
+    /**
+     * Generates and returns a PDF report of filtered hurricane data.
+     * The response is set to display the PDF inline in the browser.
+     *
+     * @return ResponseEntity containing the PDF file as a byte array.
+     * @throws IOException if an error occurs during report generation.
+     */
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/viewReport")
     public ResponseEntity<byte[]> viewReport() throws IOException {
